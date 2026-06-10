@@ -169,8 +169,8 @@ services:
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
-      - GF_SERVER_DOMAIN=btvn05.luonghoangviet.io.vn
-      - GF_SERVER_ROOT_URL=https://btvn05.luonghoangviet.io.vn/grafana/
+      - GF_SERVER_DOMAIN=localhost
+      - GF_SERVER_ROOT_URL=http://localhost:8080/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
     ports:
       - "3000:3000"
@@ -201,14 +201,6 @@ services:
     volumes:
       - ./frontend:/usr/share/nginx/html
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      - bt5_net
-
-  bt5_cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: bt5_cloudflared
-    restart: always
-    command: tunnel run --token eyJhIjoiYjFiYjMyZGZmZjY4NzYwZTQ4NDA0MmY3OWExOWExZmYiLCJ0IjoiYzg1YTk2ZmMtZGFjNS00ZTFiLTgyMTYtYTE4NmU3MDQxNzI5IiwicyI6IllXWTRPRFUwWVRJdE5ESmpaUzAwTldSaExXRTFOekF0WmpGbVpqZzJObUkyTlRjeCJ9
     networks:
       - bt5_net
 
@@ -269,7 +261,6 @@ server {
         root   /usr/share/nginx/html;
     }
 }
-
 ```
 
 ## 4. Cơ sở dữ liệu MariaDB (MySQL)
@@ -382,11 +373,11 @@ Sau đó kiểm tra
 Docker ps
 ```
 
-<img width="1692" height="212" alt="image" src="https://github.com/user-attachments/assets/eff954c8-ccf3-4cdd-8175-099f0b660db9" />
+<img width="1267" height="143" alt="image" src="https://github.com/user-attachments/assets/8c34c5c0-8ca2-4d4d-94cc-23dd0bd90422" />
 
-Truy cập https://btvn05.luonghoangviet.io.vn/ để kiểm tra giao diện
+Truy cập http://192.168.1.10:8080/ để kiểm tra giao diện
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/5a0d11a0-5293-4624-9d94-348c96b873af" />
+<img width="1920" height="1140" alt="Screenshot 2026-06-10 233622" src="https://github.com/user-attachments/assets/4260dd75-c378-41d1-9e8a-1a4efd122c28" />
 
 ## 8. Cài đặt Node-RED và Logic Cảnh Báo
 
@@ -420,21 +411,17 @@ Kết quả:
 
 ## 9. Cấu Hình Grafana Dashboard
 
-Truy cập https://btvn05.luonghoangviet.io.vn/grafana/login, đăng nhập:
+Truy cập http://localhost:8080/grafana/, đăng nhập, sau đó vào Datasource và cấu hình như sau: 
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/601a5a43-a1e7-4634-a2b6-09723260bce0" />
-
-Sau đó vào Datasource và cấu hình như sau: 
-
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/1f71836a-bafd-4dd7-a1a4-3a9873a4d75f" />
+<img width="1920" height="1200" alt="Screenshot 2026-06-11 002848" src="https://github.com/user-attachments/assets/1b352420-9599-4e92-a356-01793e83e87a" />
 
 Save & Test
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/661fe281-5b5f-4c5a-8fdb-c67176fc7952" />
+<img width="1920" height="1200" alt="Screenshot 2026-06-11 003002" src="https://github.com/user-attachments/assets/91169864-bc91-4b68-9bec-0b6c36a74122" />
 
 Tạo 1 Dashboard mới và lấy dữ liệu giá tiền BTC từ InfluxDB
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/52b80589-890a-4fac-a5a3-634eec245f04" />
+<img width="1920" height="1200" alt="Screenshot 2026-06-11 003808" src="https://github.com/user-attachments/assets/68714c92-9c11-490b-ad58-517fcaa84808" />
 
 Lấy Iframe và nhúng vào FrontEnd ở bước 6
 
@@ -445,10 +432,9 @@ width="100%" height="450" frameborder="0">
 </iframe>
 ```
 
-Truy cập btvn05.luonghoangviet.io.vn để kiểm tra:
+Truy cập http://192.168.1.10:8080/ để kiểm tra:
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/60f91123-50b5-4686-ac73-901231fb9c25" />
-
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/7d552911-7922-499d-99cf-14105cacd9db" />
 
 ## 10. Export & Restore Container
 
@@ -464,7 +450,7 @@ docker compose down -v
 
 <img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/3132638c-93ad-4c80-9884-b45e05be8606" />
 
-Truy cập https://btvn05.luonghoangviet.io.vn/ thấy đã bị sập
+Truy cập http://192.168.1.10:8080/ thấy đã bị sập
 
 <img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/72d9f20b-7fdd-413e-9dda-f2a6a794fd94" />
 
@@ -480,9 +466,10 @@ docker compose up -d
 
 <img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/b26af26e-e6b9-4b20-8035-47f66af0cf6f" />
 
-Truy cập https://btvn05.luonghoangviet.io.vn/ để kiểm tra
+Truy cập http://192.168.1.10:8080/ để kiểm tra
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/ebb51589-b7e5-4264-924c-bcdd8826fe4c" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/ae78fa10-18bc-4c6c-b5f2-1023d8f741f8" />
+
 
 
 
