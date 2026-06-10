@@ -327,8 +327,7 @@ Lấy Iframe và nhúng vào FrontEnd ở bước 6
 
 ```
 <iframe
-                src="http://192.168.1.10:3000/d-solo/adr8stf/btc?orgId=1&from=1781111253150&to=1781113053150&timezone=browser&theme=dark&panelId=1"
-                width="100%" height="450" frameborder="0"></iframe>
+src="/grafana/d-solo/adr8stf/btc?orgId=1&from=1781111253150&to=1781113053150&timezone=browser&theme=dark&panelId=1"width="100%" height="450" frameborder="0">
 </iframe>
 ```
 
