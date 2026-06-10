@@ -307,7 +307,11 @@ Kết quả:
 
 ## 9. Cấu Hình Grafana Dashboard
 
-Truy cập http://192.168.1.10:3000, đăng nhập sau đó vào Datasource và cấu hình như sau: 
+Truy cập https://btvn05.luonghoangviet.io.vn/grafana/login, đăng nhập:
+
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/601a5a43-a1e7-4634-a2b6-09723260bce0" />
+
+Sau đó vào Datasource và cấu hình như sau: 
 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a6c09378-e425-4c5a-a1c6-ff823cf68c0e" />
 
