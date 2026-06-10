@@ -344,27 +344,29 @@ Truy cập https://btvn05.luonghoangviet.io.vn/grafana/login, đăng nhập:
 
 Sau đó vào Datasource và cấu hình như sau: 
 
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a6c09378-e425-4c5a-a1c6-ff823cf68c0e" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/1f71836a-bafd-4dd7-a1a4-3a9873a4d75f" />
 
 Save & Test
 
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/1ecc6069-ecfd-4da9-99b0-218542c108ed" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/661fe281-5b5f-4c5a-8fdb-c67176fc7952" />
 
 Tạo 1 Dashboard mới và lấy dữ liệu giá tiền BTC từ InfluxDB
 
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0398ad9a-7405-4fe9-961b-5ec954d6753d" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/52b80589-890a-4fac-a5a3-634eec245f04" />
 
 Lấy Iframe và nhúng vào FrontEnd ở bước 6
 
 ```
 <iframe
-src="/grafana/d-solo/adr8stf/btc?orgId=1&from=1781111253150&to=1781113053150&timezone=browser&theme=dark&panelId=1"width="100%" height="450" frameborder="0">
+src="https://btvn05.luonghoangviet.io.vn/grafana/d-solo/adwpn6n/btc?orgId=1&from=1781121795939&to=1781122095939&timezone=browser&panelId=panel-1"
+width="100%" height="450" frameborder="0">
 </iframe>
 ```
 
 Truy cập btvn05.luonghoangviet.io.vn để kiểm tra:
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/4f2707d2-6c04-4ee8-94d2-c689307927ad" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/60f91123-50b5-4686-ac73-901231fb9c25" />
+
 
 ## 10. Export & Restore Container
 
@@ -372,16 +374,34 @@ Truy cập btvn05.luonghoangviet.io.vn để kiểm tra:
 
 docker save -o bt5_all_images.tar mariadb:10.6 influxdb:1.8 nodered/node-red:latest grafana/grafana:latest nginx:alpine cloudflare/cloudflared:latest opensource05-bt5_flask_api
 
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/1e2aee5d-eed0-4e34-b042-cb4c4199493f" />
+
 ### b) Xóa các container và dữ liệu hiện tại (nếu cần dọn dẹp thật sạch dùng down -v)
 
 docker compose down -v
 
-### c) Phục hồi image từ file tar (Nếu mang sang máy tính khác)
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/3132638c-93ad-4c80-9884-b45e05be8606" />
+
+Truy cập https://btvn05.luonghoangviet.io.vn/ thấy đã bị sập
+
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/72d9f20b-7fdd-413e-9dda-f2a6a794fd94" />
+
+### c) Phục hồi image từ file tar
 
 docker load -i bt5_all_images.tar
 
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/4ac5307f-6bc8-430e-808d-8a6086b53fb6" />
+
 ### d) Khôi phục chạy lại dự án
+
 docker compose up -d
+
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/b26af26e-e6b9-4b20-8035-47f66af0cf6f" />
+
+Truy cập https://btvn05.luonghoangviet.io.vn/ để kiểm tra
+
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/ebb51589-b7e5-4264-924c-bcdd8826fe4c" />
+
 
 
 
