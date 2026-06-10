@@ -3,6 +3,92 @@
 # MÔN HỌC: PHÁT TRIỂN ỨNG DỤNG VỚI MÃ NGUỒN MỞ
 # BÀI TẬP 05
 # BÀI LÀM
+# I. LÝ THUYẾT
+
+## 1. Khái niệm Docker
+**Docker** là một nền tảng mã nguồn mở (open-source platform) cung cấp giải pháp tự động hóa quá trình đóng gói, phân phối và triển khai ứng dụng bên trong các môi trường cô lập, được gọi là **Container**.
+
+Khác với công nghệ ảo hóa truyền thống (Virtual Machine - VM) yêu cầu ảo hóa toàn bộ hệ điều hành khách (Guest OS), Docker sử dụng chung nhân hệ điều hành (kernel) của máy chủ vật lý (Host OS). Cơ chế này giúp các container khởi động cực kỳ nhanh chóng, tối ưu hóa dung lượng và giảm thiểu tối đa việc tiêu hao tài nguyên phần cứng.
+
+**Mục đích cốt lõi:** Trọng tâm của Docker là giải quyết vấn đề bất đồng nhất về môi trường cấu hình giữa máy tính phát triển (development) và máy chủ triển khai (production). Docker đóng gói mã nguồn (source code) cùng với toàn bộ các thư viện phụ thuộc (dependencies) và tệp cấu hình thành một khối đồng nhất (gọi là Image), đảm bảo ứng dụng luôn hoạt động chính xác và nhất quán ở bất kỳ nền tảng nào.
+
+
+## 2. Các từ khóa quan trọng trong tệp `docker-compose.yml`
+Tệp `docker-compose.yml` được sử dụng để định nghĩa và cấu hình các ứng dụng Docker bao gồm nhiều dịch vụ (multi-container). Dưới đây là các từ khóa cơ bản và ý nghĩa:
+
+### a. Các từ khóa cấp cấu trúc (Top-level keywords):
+- **`services`**: Định nghĩa danh sách các ứng dụng hoặc dịch vụ (container) tham gia vào hệ thống.
+- **`networks`**: Khai báo các mạng nội bộ ảo, cho phép các container giao tiếp và truyền tải dữ liệu một cách an toàn.
+- **`volumes`**: Quản lý các vùng lưu trữ dữ liệu liên tục (persistent storage), giúp bảo toàn cơ sở dữ liệu khi container bị dừng hoặc xóa bỏ.
+
+### b. Các từ khóa cấu hình chi tiết bên trong một `service`:
+- **`image`**: Chỉ định tên tệp ảnh (image) từ Docker Hub (hoặc registry khác) để khởi tạo container.
+  - *Ví dụ:* `image: mariadb:10.6`
+- **`build`**: Cung cấp đường dẫn tới thư mục chứa tệp `Dockerfile`. Docker sẽ tự động quá trình xây dựng (build) image từ mã nguồn thay vì tải xuống từ mạng.
+  - *Ví dụ:* `build: ./flask_api`
+- **`container_name`**: Đặt định danh tùy chỉnh cho container, hỗ trợ việc quản trị và kiểm tra (log/monitor) dễ dàng hơn.
+  - *Ví dụ:* `container_name: bt5_mariadb`
+- **`ports`**: Cấu hình ánh xạ cổng giao tiếp mạng giữa máy chủ vật lý (Host) và Container. Định dạng là `"HOST_PORT:CONTAINER_PORT"`.
+  - *Ví dụ:* `ports: - "3307:3306"` (Các yêu cầu mạng tới cổng 3307 trên máy Host sẽ được chuyển tiếp vào cổng 3306 bên trong container).
+- **`environment`**: Khai báo các biến môi trường cấu hình (như tài khoản, mật khẩu, thông tin kết nối) cần thiết cho quá trình thực thi bên trong container.
+  - *Ví dụ:* `environment: - MYSQL_ROOT_PASSWORD=strongpassword`
+- **`volumes`**: Cấu hình việc gắn (mount) một thư mục từ máy chủ Host hoặc một phân vùng Docker Volume vào bên trong cấu trúc tệp của container.
+  - *Ví dụ:* `volumes: - mariadb_data:/var/lib/mysql`
+- **`networks`**: Đăng ký container vào một hoặc nhiều mạng ảo đã được khởi tạo.
+  - *Ví dụ:* `networks: - bt5_net`
+- **`depends_on`**: Định nghĩa thứ tự khởi động của hệ thống. Container hiện tại sẽ chỉ khởi động sau khi các container được chỉ định trong danh sách này đã chuyển sang trạng thái hoạt động.
+  - *Ví dụ:* `depends_on: - bt5_mariadb` (Đảm bảo Database khởi động xong mới bật API).
+- **`restart`**: Chỉ định chính sách tự động khởi động lại container khi tiến trình gặp sự cố (crash) hoặc khi Docker daemon khởi động lại.
+  - *Ví dụ:* `restart: always`
+
+
+## 3. Ưu điểm khi triển khai ứng dụng sử dụng Docker
+- **Tính nhất quán về môi trường (Consistency):** Loại bỏ hoàn toàn sự sai lệch giữa môi trường phát triển và vận hành thực tế. Ứng dụng chạy thành công ở môi trường lập trình viên sẽ đảm bảo chạy chính xác ở môi trường máy chủ.
+- **Triển khai nhanh chóng (Rapid Deployment):** Nhờ cơ chế không cần khởi tạo hệ điều hành khách, các tiến trình container được khởi động và dừng lại gần như tức thì.
+- **Tối ưu hóa hiệu năng và tài nguyên (Resource Efficiency):** Dung lượng cấu trúc cực kỳ nhẹ, tối giản hóa việc tiêu thụ CPU và RAM, cho phép vận hành mật độ container rất cao trên cùng một cấu hình phần cứng.
+- **Khả năng cô lập (Isolation):** Các dịch vụ hoạt động hoàn toàn độc lập. Lỗi ứng dụng, xung đột thư viện hoặc rủi ro bảo mật ở một container sẽ bị giới hạn và không tác động trực tiếp đến các thành phần khác.
+- **Tính di động linh hoạt (Portability):** Một Docker Image có thể dễ dàng di chuyển và vận hành đa nền tảng: từ máy chủ Linux nội bộ, máy tính cá nhân macOS/Windows đến các hệ thống điện toán đám mây (Cloud computing như AWS, Google Cloud, Azure).
+
+
+## 4. Triển khai ứng dụng Docker trên hệ thống máy chủ không có kết nối mạng (Air-gapped Server)
+**Tình huống:** Ứng dụng đã được xây dựng và kiểm thử thành công trên thiết bị cá nhân (có kết nối Internet). Yêu cầu triển khai hệ thống này lên một máy chủ thực tế (Production Server) trong mạng nội bộ hoàn toàn cô lập với Internet.
+
+Quy trình giải quyết bao gồm 4 bước chính thông qua phương pháp di chuyển dữ liệu ngoại tuyến:
+
+**Bước 1: Trích xuất (Export) Docker Images từ máy tính phát triển**
+Trên thiết bị cá nhân (đã tải sẵn thư viện), sử dụng công cụ `docker save` để đóng gói toàn bộ các Docker Images phụ thuộc thành một tệp lưu trữ `.tar`.
+```bash
+docker save -o app_images.tar mariadb:10.6 influxdb:1.8 nginx:alpine my_api_image:latest
+```
+
+**Bước 2: Nén mã nguồn và dữ liệu dự án**
+Sử dụng công cụ nén (như `tar`, `zip`) để đóng gói toàn bộ thư mục dự án (bao gồm tệp `docker-compose.yml`, các thư mục chứa mã nguồn, tệp tin cấu hình máy chủ web và các luồng dữ liệu).
+```bash
+tar -czvf app_project.tar.gz ./my_project_folder
+```
+
+**Bước 3: Giao vận dữ liệu ngoại tuyến (Sneakernet)**
+Lưu trữ tệp `app_images.tar` và `app_project.tar.gz` vào thiết bị lưu trữ di động (USB Flash Drive, Ổ cứng di động) và tiến hành sao chép thủ công sang ổ cứng của máy chủ đích.
+
+**Bước 4: Nạp dữ liệu và khởi chạy hệ thống tại máy chủ đích**
+Tại máy chủ đích (Air-gapped server):
+- Tiến hành giải nén mã nguồn dự án:
+  ```bash
+  tar -xzvf app_project.tar.gz
+  cd my_project_folder
+  ```
+- Nạp (Load) tệp Images trực tiếp vào Docker daemon nội bộ của hệ thống thay vì tải từ Internet:
+  ```bash
+  docker load -i app_images.tar
+  ```
+- Thực thi lệnh triển khai bằng Docker Compose:
+  ```bash
+  docker compose up -d
+  ```
+Lúc này, quá trình xây dựng hệ thống sẽ hoàn tất bằng cách tái sử dụng trực tiếp các Images và tệp tin mã nguồn có sẵn, giúp dịch vụ hoạt động hoàn chỉnh mà không cần tới kết nối mạng bên ngoài.
+
+# II. THỰC HÀNH
+
 ## 1. Tạo Folder opensource05 có cấu trúc như sau:
 
 ```text
