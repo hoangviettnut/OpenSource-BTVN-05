@@ -384,10 +384,6 @@ Docker ps
 
 <img width="1692" height="212" alt="image" src="https://github.com/user-attachments/assets/eff954c8-ccf3-4cdd-8175-099f0b660db9" />
 
-Cấu hình Cloudflare để Public website lên Internet:
-
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7b8f6983-f376-428f-ab12-0df5aade66ec" />
-
 Truy cập https://btvn05.luonghoangviet.io.vn/ để kiểm tra giao diện
 
 <img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/5a0d11a0-5293-4624-9d94-348c96b873af" />
