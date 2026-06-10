@@ -37,7 +37,7 @@ services:
       MYSQL_USER: bt5user
       MYSQL_PASSWORD: bt5password
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -57,7 +57,9 @@ services:
     volumes:
       - influxdb_data:/var/lib/influxdb
     networks:
-      - bt5_net
+      bt5_net:
+        aliases:
+          - influxdb-bt5
 
   bt5_nodered:
     image: nodered/node-red:latest
@@ -255,4 +257,84 @@ opensource05/
 ```       
 
 ## 7. Chạy Ứng Dụng BT5
+```
+Docker compose up -d
+```
+Sau đó kiểm tra
+
+```
+Docker ps
+```
+
+<img width="1743" height="172" alt="image" src="https://github.com/user-attachments/assets/63b7f6f9-1685-4cab-bf8f-0cdfdd7792fa" />
+
+Cấu hình Cloudflare để Public website lên Internet:
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7b8f6983-f376-428f-ab12-0df5aade66ec" />
+
+Truy cập https://btvn05.luonghoangviet.io.vn/ để kiểm tra giao diện
+
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/73198358-4543-43c3-a6c6-88286d3ebadd" />
+
+## 8. Cài đặt Node-RED và Logic Cảnh Báo
+
+Truy cập http://192.168.1.10:1880 để tiến hình cấu hình cho Node-RED
+
+### a) Cài đặt Package
+
+node-red-node-mysql, node-red-contrib-influxdb, node-red-contrib-telegrambot.
+
+### b) Tạo Flow cho Node-RED như sau:
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/dc676bd6-142c-48fe-9b12-8fd43d95c68f" />
+
+Cài đặt cảnh báo giá BTC khi không nằm trong khoảng 60000$-61000$:
+
+<img width="626" height="930" alt="image" src="https://github.com/user-attachments/assets/eb6ceeb7-f835-476a-a2de-826edf65df3c" />
+
+
+### c) Cấu hình kết nối đến telegram
+
+Tạo Bot và lấy token, điền vào Node "TelegramSender"
+
+Tạo Groupchat (lấy ID) điền vào Node "Format tin nhắn tele"
+
+Tùy vào cài đặt, Bot sẽ định kỳ gửi giá BTC vào nhóm sau mỗi N giây (n là số thời gian tự cài theo ý thích)
+
+Kết quả:
+
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/884d0707-6c77-47b9-a8ab-caad173a860b" />
+
+## 9. Cấu Hình Grafana Dashboard
+
+Truy cập http://192.168.1.10:3000, đăng nhập sau đó vào Datasource và cấu hình như sau: 
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a6c09378-e425-4c5a-a1c6-ff823cf68c0e" />
+
+Save & Test
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/1ecc6069-ecfd-4da9-99b0-218542c108ed" />
+
+Tạo 1 Dashboard mới và lấy dữ liệu giá tiền BTC từ InfluxDB
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0398ad9a-7405-4fe9-961b-5ec954d6753d" />
+
+Lấy Iframe và nhúng vào FrontEnd ở bước 6
+
+```
+<iframe
+                src="http://192.168.1.10:3000/d-solo/adr8stf/btc?orgId=1&from=1781111253150&to=1781113053150&timezone=browser&theme=dark&panelId=1"
+                width="100%" height="450" frameborder="0"></iframe>
+</iframe>
+```
+
+Truy cập FrontEnd để kiểm tra:
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/800a9f75-d80e-4b21-a9ac-072429be8863" />
+
+
+
+
+
+
 
