@@ -8,15 +8,17 @@
 ```text
 opensource05/
 ├── docker-compose.yml       # Khởi chạy 6 service độc lập
-├── frontend/                # Thư mục web UI (Giao diện hiển thị)
-│   ├── index.html           # File cấu trúc giao diện & Iframe
+├── frontend/                # Thư mục chứa giao diện hiển thị
+│   ├── index.html           # File cấu trúc (nhúng Iframe Grafana)
 │   ├── style.css            # File làm đẹp
 │   └── script.js            # Code Fetch API cập nhật số liệu
-├── flask_api/               # Thư mục Backend tự build
+├── nginx/                   # Thư mục cấu hình Web Server
+│   └── nginx.conf           # Cấu hình cache và chống lỗi web
+├── flask_api/               # Thư mục Backend API tự build
 │   ├── Dockerfile           # Code đóng gói API
 │   ├── requirements.txt     # Các thư viện python (Flask, CORS, MySQL)
 │   └── app.py               # Logic kết nối MariaDB và trả JSON
-├── mariadb/                 # Dữ liệu & Script cho MariaDB
+├── mariadb/                 # Dữ liệu & Script khởi tạo
 │   └── init.sql             # Chứa câu lệnh tự động tạo bảng
 └── nodered_data/            # Thư mục ánh xạ lưu luồng của NodeRED
 ```
@@ -107,7 +109,7 @@ services:
       - "8080:80"
     volumes:
       - ./frontend:/usr/share/nginx/html
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - bt5_net
 
