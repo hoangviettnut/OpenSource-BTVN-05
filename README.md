@@ -5,6 +5,7 @@
 # BÀI LÀM
 ## 1. Tạo Folder opensource05 có cấu trúc như sau:
 
+```text
 opensource05/
 ├── docker-compose.yml       # Khởi chạy 6 service độc lập
 ├── frontend/                # Thư mục web UI (Giao diện hiển thị)
@@ -18,6 +19,7 @@ opensource05/
 ├── mariadb/                 # Dữ liệu & Script cho MariaDB
 │   └── init.sql             # Chứa câu lệnh tự động tạo bảng
 └── nodered_data/            # Thư mục ánh xạ lưu luồng của NodeRED
+```
 
 ## 2. Viết file Docker-compose.yml
 
@@ -241,13 +243,14 @@ if __name__ == '__main__':
 ## 6. Xây dựng Giao diện Frontend
 
 Viết giao diện và cấu hình chúng với cấu trúc như sau
+
+```text
 opensource05/
 └── frontend/            
     ├── index.html          # Giao diện chính
     ├── style.css           # File chỉnh màu sắc, bố cục
     └── script.js           # File xử lý logic gọi API
-       
+```       
 
-  ## 7. Chạy Ứng Dụng BT5
-
+## 7. Chạy Ứng Dụng BT5
 
