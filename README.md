@@ -294,9 +294,11 @@ Cài đặt cảnh báo giá BTC khi không nằm trong khoảng 60000$-61000$:
 
 Tạo Bot và lấy token, điền vào Node "TelegramSender"
 
-Tạo Groupchat (lấy ID) điền vào Node "Format tin nhắn tele"
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/3c81b2e7-a377-4581-a639-db550836cf37" />
 
-Tùy vào cài đặt, Bot sẽ định kỳ gửi giá BTC vào nhóm sau mỗi N giây (n là số thời gian tự cài theo ý thích)
+Tạo Groupchat thêm Bot vừa tạo (lấy ID Group) điền vào Node "Format tin nhắn tele"
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f1971dc3-3512-4ba2-940b-18ee6ea53a3a" />
 
 Kết quả:
 
