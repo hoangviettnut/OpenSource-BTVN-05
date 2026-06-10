@@ -93,7 +93,7 @@ Lúc này, quá trình xây dựng hệ thống sẽ hoàn tất bằng cách t�
 
 ```text
 opensource05/
-├── docker-compose.yml       # Khởi chạy 7 service độc lập
+├── docker-compose.yml       # Khởi chạy 6 service độc lập
 ├── frontend/                # Thư mục chứa giao diện hiển thị
 │   ├── index.html           # File cấu trúc (nhúng Iframe Grafana)
 │   ├── style.css            # File làm đẹp
@@ -375,9 +375,9 @@ Docker ps
 
 <img width="1267" height="143" alt="image" src="https://github.com/user-attachments/assets/8c34c5c0-8ca2-4d4d-94cc-23dd0bd90422" />
 
-Truy cập http://192.168.1.10:8080/ để kiểm tra giao diện
+Truy cập http://192.168.1.10:8080/ để kiểm tra giao diện (lúc này chưa có Grafana)
 
-<img width="1920" height="1140" alt="Screenshot 2026-06-10 233622" src="https://github.com/user-attachments/assets/4260dd75-c378-41d1-9e8a-1a4efd122c28" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/d17860ff-da47-4aa8-8a4b-e650585e6686" />
 
 ## 8. Cài đặt Node-RED và Logic Cảnh Báo
 
@@ -409,6 +409,10 @@ Kết quả:
 
 <img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/614fd47e-e4aa-4dbe-a6a0-8b8780aa5ec7" />
 
+Kiểm tra trên tài khoản khác đã được thêm vào nhóm:
+
+<img width="1260" height="2800" alt="1781128692284_182607293721674533_7657304349673072617_50c7ad5695063243eb18e9a4548975b2" src="https://github.com/user-attachments/assets/fefe640a-7240-46d1-8b10-750716bc4b47" />
+
 ## 9. Cấu Hình Grafana Dashboard
 
 Truy cập http://localhost:8080/grafana/, đăng nhập, sau đó vào Datasource và cấu hình như sau: 
@@ -421,54 +425,45 @@ Save & Test
 
 Tạo 1 Dashboard mới và lấy dữ liệu giá tiền BTC từ InfluxDB
 
-<img width="1920" height="1200" alt="Screenshot 2026-06-11 003808" src="https://github.com/user-attachments/assets/68714c92-9c11-490b-ad58-517fcaa84808" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/27dab48d-b06b-4f15-8a0e-dedcee881964" />
 
 Lấy Iframe và nhúng vào FrontEnd ở bước 6
 
 ```
 <iframe
-src="https://btvn05.luonghoangviet.io.vn/grafana/d-solo/adwpn6n/btc?orgId=1&from=1781121795939&to=1781122095939&timezone=browser&panelId=panel-1"
+src="/grafana/d-solo/adxzb8p/btc?orgId=1&from=now-1h&to=now&timezone=browser&panelId=1&refresh=5s"
 width="100%" height="450" frameborder="0">
 </iframe>
 ```
 
 Truy cập http://192.168.1.10:8080/ để kiểm tra:
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/7d552911-7922-499d-99cf-14105cacd9db" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/76aea2cd-175e-45cf-ba2d-c9c594a08370" />
 
 ## 10. Export & Restore Container
 
 ### a) Đóng gói image (Sẽ nén các image được dùng ra 1 file)
 
-docker save -o bt5_all_images.tar mariadb:10.6 influxdb:1.8 nodered/node-red:latest grafana/grafana:latest nginx:alpine cloudflare/cloudflared:latest opensource05-bt5_flask_api
+docker save -o bt5_all_images.tar mariadb:10.6 influxdb:1.8 nodered/node-red:latest grafana/grafana:latest nginx:alpine opensource05-bt5_flask_api
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/1e2aee5d-eed0-4e34-b042-cb4c4199493f" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/b826ef38-1dcf-4155-91cf-45907da65d61" />
 
 ### b) Xóa các container và dữ liệu hiện tại (nếu cần dọn dẹp thật sạch dùng down -v)
 
-docker compose down -v
+docker compose down -v, sau đó truy cập http://192.168.1.10:8080/ và thấy đã bị sập
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/3132638c-93ad-4c80-9884-b45e05be8606" />
-
-Truy cập http://192.168.1.10:8080/ thấy đã bị sập
-
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/72d9f20b-7fdd-413e-9dda-f2a6a794fd94" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/474ef4bc-84a4-42c8-84c1-41221741df7a" />
 
 ### c) Phục hồi image từ file tar
 
 docker load -i bt5_all_images.tar
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/4ac5307f-6bc8-430e-808d-8a6086b53fb6" />
-
 ### d) Khôi phục chạy lại dự án
 
-docker compose up -d
+docker compose up -d, sau đó truy cập http://192.168.1.10:8080/ để kiểm tra
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/b26af26e-e6b9-4b20-8035-47f66af0cf6f" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/7ab4b341-692e-4e0c-842f-6a76210252b7" />
 
-Truy cập http://192.168.1.10:8080/ để kiểm tra
-
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/ae78fa10-18bc-4c6c-b5f2-1023d8f741f8" />
 
 
 
