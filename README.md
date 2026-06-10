@@ -334,7 +334,7 @@ Tạo Groupchat thêm Bot vừa tạo (lấy ID Group) điền vào Node "Format
 
 Kết quả:
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/884d0707-6c77-47b9-a8ab-caad173a860b" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/614fd47e-e4aa-4dbe-a6a0-8b8780aa5ec7" />
 
 ## 9. Cấu Hình Grafana Dashboard
 
@@ -366,7 +366,22 @@ Truy cập btvn05.luonghoangviet.io.vn để kiểm tra:
 
 <img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/4f2707d2-6c04-4ee8-94d2-c689307927ad" />
 
+## 10. Export & Restore Container
 
+### a) Đóng gói image (Sẽ nén các image được dùng ra 1 file)
+
+docker save -o bt5_all_images.tar mariadb:10.6 influxdb:1.8 nodered/node-red:latest grafana/grafana:latest nginx:alpine cloudflare/cloudflared:latest opensource05-bt5_flask_api
+
+### b) Xóa các container và dữ liệu hiện tại (nếu cần dọn dẹp thật sạch dùng down -v)
+
+docker compose down -v
+
+### c) Phục hồi image từ file tar (Nếu mang sang máy tính khác)
+
+docker load -i bt5_all_images.tar
+
+### d) Khôi phục chạy lại dự án
+docker compose up -d
 
 
 
