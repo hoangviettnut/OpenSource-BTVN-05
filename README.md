@@ -37,7 +37,7 @@ services:
       MYSQL_USER: bt5user
       MYSQL_PASSWORD: bt5password
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -57,9 +57,7 @@ services:
     volumes:
       - influxdb_data:/var/lib/influxdb
     networks:
-      bt5_net:
-        aliases:
-          - influxdb-bt5
+      - bt5_net
 
   bt5_nodered:
     image: nodered/node-red:latest
@@ -266,7 +264,7 @@ Sau đó kiểm tra
 Docker ps
 ```
 
-<img width="1743" height="172" alt="image" src="https://github.com/user-attachments/assets/63b7f6f9-1685-4cab-bf8f-0cdfdd7792fa" />
+<img width="1692" height="212" alt="image" src="https://github.com/user-attachments/assets/eff954c8-ccf3-4cdd-8175-099f0b660db9" />
 
 Cấu hình Cloudflare để Public website lên Internet:
 
@@ -274,11 +272,11 @@ Cấu hình Cloudflare để Public website lên Internet:
 
 Truy cập https://btvn05.luonghoangviet.io.vn/ để kiểm tra giao diện
 
-<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/73198358-4543-43c3-a6c6-88286d3ebadd" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/5a0d11a0-5293-4624-9d94-348c96b873af" />
 
 ## 8. Cài đặt Node-RED và Logic Cảnh Báo
 
-Truy cập http://192.168.1.10:1880 để tiến hình cấu hình cho Node-RED
+Truy cập http://192.168.1.10:1880 để tiến hành cấu hình cho Node-RED
 
 ### a) Cài đặt Package
 
@@ -291,7 +289,6 @@ node-red-node-mysql, node-red-contrib-influxdb, node-red-contrib-telegrambot.
 Cài đặt cảnh báo giá BTC khi không nằm trong khoảng 60000$-61000$:
 
 <img width="626" height="930" alt="image" src="https://github.com/user-attachments/assets/eb6ceeb7-f835-476a-a2de-826edf65df3c" />
-
 
 ### c) Cấu hình kết nối đến telegram
 
@@ -331,9 +328,9 @@ src="/grafana/d-solo/adr8stf/btc?orgId=1&from=1781111253150&to=1781113053150&tim
 </iframe>
 ```
 
-Truy cập FrontEnd để kiểm tra:
+Truy cập btvn05.luonghoangviet.io.vn để kiểm tra:
 
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/800a9f75-d80e-4b21-a9ac-072429be8863" />
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/4f2707d2-6c04-4ee8-94d2-c689307927ad" />
 
 
 
