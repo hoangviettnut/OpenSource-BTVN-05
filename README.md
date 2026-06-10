@@ -7,7 +7,7 @@
 
 ```text
 opensource05/
-├── docker-compose.yml       # Khởi chạy 6 service độc lập
+├── docker-compose.yml       # Khởi chạy 7 service độc lập
 ├── frontend/                # Thư mục chứa giao diện hiển thị
 │   ├── index.html           # File cấu trúc (nhúng Iframe Grafana)
 │   ├── style.css            # File làm đẹp
@@ -37,7 +37,7 @@ services:
       MYSQL_USER: bt5user
       MYSQL_PASSWORD: bt5password
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -57,7 +57,9 @@ services:
     volumes:
       - influxdb_data:/var/lib/influxdb
     networks:
-      - bt5_net
+      bt5_net:
+        aliases:
+          - influxdb-bt5
 
   bt5_nodered:
     image: nodered/node-red:latest
@@ -81,6 +83,9 @@ services:
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_SERVER_DOMAIN=btvn05.luonghoangviet.io.vn
+      - GF_SERVER_ROOT_URL=https://btvn05.luonghoangviet.io.vn/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
     ports:
       - "3000:3000"
     volumes:
@@ -113,6 +118,14 @@ services:
     networks:
       - bt5_net
 
+  bt5_cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: bt5_cloudflared
+    restart: always
+    command: tunnel run --token eyJhIjoiYjFiYjMyZGZmZjY4NzYwZTQ4NDA0MmY3OWExOWExZmYiLCJ0IjoiYzg1YTk2ZmMtZGFjNS00ZTFiLTgyMTYtYTE4NmU3MDQxNzI5IiwicyI6IllXWTRPRFUwWVRJdE5ESmpaUzAwTldSaExXRTFOekF0WmpGbVpqZzJObUkyTlRjeCJ9
+    networks:
+      - bt5_net
+
 networks:
   bt5_net:
     driver: bridge
@@ -139,6 +152,24 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
+    location ^~ /api/ {
+        resolver 127.0.0.11 valid=30s;
+        set $upstream_api bt5_flask_api;
+        proxy_pass http://$upstream_api:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location ^~ /grafana/ {
+        resolver 127.0.0.11 valid=30s;
+        set $upstream_grafana bt5_grafana;
+        proxy_pass http://$upstream_grafana:3000;
+        proxy_set_header Host $http_host;
+    }
+
+
     # Tối ưu hóa cache cho các file tĩnh (js, css)
     location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
         root /usr/share/nginx/html;
@@ -152,6 +183,7 @@ server {
         root   /usr/share/nginx/html;
     }
 }
+
 ```
 
 ## 4. Cơ sở dữ liệu MariaDB (MySQL)
