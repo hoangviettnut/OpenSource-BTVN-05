@@ -405,13 +405,13 @@ Tạo Groupchat thêm Bot vừa tạo (lấy ID Group) điền vào Node "Format
 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f1971dc3-3512-4ba2-940b-18ee6ea53a3a" />
 
+Thành viên Group:
+
+<img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/31848f34-0d96-47fa-9249-4b29ea60f0f3" />
+
 Kết quả:
 
 <img width="1920" height="1140" alt="image" src="https://github.com/user-attachments/assets/614fd47e-e4aa-4dbe-a6a0-8b8780aa5ec7" />
-
-Kiểm tra trên tài khoản khác đã được thêm vào nhóm:
-
-<img width="1260" height="2800" alt="1781128692284_182607293721674533_7657304349673072617_50c7ad5695063243eb18e9a4548975b2" src="https://github.com/user-attachments/assets/fefe640a-7240-46d1-8b10-750716bc4b47" />
 
 ## 9. Cấu Hình Grafana Dashboard
 
